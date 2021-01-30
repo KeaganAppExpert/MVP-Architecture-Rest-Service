@@ -1,11 +1,11 @@
-package com.example.mvparchitecture.model;
+package com.example.mvparchitecture.data.model;
 
 import java.util.List;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MusicModel {
+public class MusicResponses {
 
     @SerializedName("resultCount")
     @Expose
