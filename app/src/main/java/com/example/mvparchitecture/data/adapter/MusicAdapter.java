@@ -4,66 +4,91 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvparchitecture.R;
 import com.example.mvparchitecture.data.model.Result;
+import com.example.mvparchitecture.data.utilities.ItemClickListener;
 
 import java.util.List;
 
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
     private List<Result> mItems;
     private Context mContext;
-    private PostItemListener mItemListener;
+    private int rowLayout;
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView titleTv;
-        PostItemListener mItemListener;
+    public MusicAdapter(List<Result> posts, int rowLayout, Context context) {
+        this.mItems = posts;
+        this.mContext = context;
+        this.rowLayout = rowLayout;
+    }
 
-        public ViewHolder(View itemView, PostItemListener postItemListener) {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
+        return new MusicAdapter.ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final Result music = mItems.get(position);
+        holder.musicName.setText(music.getTrackName());
+        Glide.with(mContext)
+                .load(music.getPreviewUrl())//changes made here=========================================
+                .into(holder.musicImage);
+        holder.setClickListener(new ItemClickListener() {
+            @Override
+            public void onClick(View view, int position, boolean isLongClick) {
+                if (isLongClick) {
+                    Toast.makeText(mContext, "#" + position + " - " + music.getArtistName() + " (Long click)", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "#" + position + " - " + music.getArtistName(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        public TextView musicName;
+        public ImageView musicImage;
+
+        private ItemClickListener clickListener;
+
+
+        public ViewHolder(View itemView) {
             super(itemView);
-            titleTv = (TextView) itemView.findViewById(android.R.id.text1);
-
-            this.mItemListener = postItemListener;
+            musicName = (TextView) itemView.findViewById(R.id.name);
+            musicImage = (ImageView)itemView.findViewById(R.id.img);
+            itemView.setTag(itemView);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
+
+        public void setClickListener(ItemClickListener itemClickListener) {
+            this.clickListener = itemClickListener;
+        }
+
         @Override
         public void onClick(View v) {
-            Result music = getItem(getAdapterPosition());
-            this.mItemListener.onPostClick(music.getTrackId());// count value on clickning hereeeeeeee
-
-            notifyDataSetChanged();
+            clickListener.onClick(v, getPosition(), false);
         }
-    }
 
-    public MusicAdapter(Context context, List<Result> posts, PostItemListener itemListener) {
-        mItems = posts;
-        mContext = context;
-        mItemListener = itemListener;
-    }
-
-    @Override
-    public MusicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        View postView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-
-        ViewHolder viewHolder = new ViewHolder(postView, this.mItemListener);
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(MusicAdapter.ViewHolder holder, int position) {
-        Result music = mItems.get(position);
-        TextView textView = holder.titleTv;
-        textView.setText(music.getTrackName());
+        @Override
+        public boolean onLongClick(View v) {
+            clickListener.onClick(v, getPosition(), true);
+            return true;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mItems == null ? 0 : mItems.size();
     }
 
     public void updateAnswers(List<Result> items) {
