@@ -40,7 +40,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
         final Result music = mItems.get(position);
         holder.musicName.setText(music.getTrackName());
         Glide.with(mContext)
-                .load(music.getPreviewUrl())//changes made here=========================================
+                .load(music.getArtworkUrl100())//changes made here=========================================
                 .into(holder.musicImage);
         holder.setClickListener(new ItemClickListener() {
             @Override
@@ -52,10 +52,16 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
                 }
             }
         });
+
+
+        holder.price.setText("$" + music.getTrackPrice().toString());
+        holder.artistName.setText(music.getArtistName());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         public TextView musicName;
+        public TextView artistName;
+        public TextView price;
         public ImageView musicImage;
 
         private ItemClickListener clickListener;
@@ -65,6 +71,8 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
             super(itemView);
             musicName = (TextView) itemView.findViewById(R.id.name);
             musicImage = (ImageView)itemView.findViewById(R.id.img);
+            price = (TextView) itemView.findViewById(R.id.price);
+            artistName = (TextView) itemView.findViewById(R.id.artistName);
             itemView.setTag(itemView);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
