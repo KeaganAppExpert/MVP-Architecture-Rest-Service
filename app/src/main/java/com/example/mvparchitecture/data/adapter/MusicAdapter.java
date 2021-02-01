@@ -39,7 +39,15 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Result music = mItems.get(position);
         String myString = "";
-        holder.musicName.setText(music.getTrackName());
+
+        try {
+            myString = music.getTrackName();
+            holder.musicName.setText(myString);
+        } catch(NullPointerException e){
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         Glide.with(mContext)
                 .load(music.getArtworkUrl100())
@@ -52,19 +60,25 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
                     Toast.makeText(mContext, "#" + position + " - " + music.getArtistName() + " (Long click)", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "#" + position + " - " + music.getArtistName(), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
 
+        String test = "";
+
         try {
 
-            myString = Double.toString(music.getTrackPrice().doubleValue());
+            test = "$"+ Double.toString(music.getTrackPrice().doubleValue());
 
-            holder.price.setText(myString);
-        } catch(Exception e){
+            holder.price.setText(test);
+            holder.artistName.setText(music.getArtistName());
+
+        } catch(NullPointerException e){
             e.printStackTrace();
+        } catch(Exception ex){
+            ex.printStackTrace();
         }
-        holder.artistName.setText(music.getArtistName());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
