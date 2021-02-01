@@ -28,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
     private MusicAdapter mAdapter;
     private ProgressDialog pDialog;
 
-    /**
-     * Subscription that represents a group of Subscriptions that are unsubscribed together.
-     */
+
+/**
+     * Subscription that represents a group of Subscriptions that are unsubscribed together.*/
+
     private CompositeSubscription _subscriptions = new CompositeSubscription();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         loadMusicList();
     }
 
-    public void loadMusicList() {
+public void loadMusicList() {
         APIService apiService =
                 RetrofitClient.getClient().create(APIService.class);
         apiService.getAnswers()
@@ -76,25 +78,29 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
-        _subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
+_subscriptions = RxUtils.getNewCompositeSubIfUnsubscribed(_subscriptions);
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        RxUtils.unsubscribeIfNotNull(_subscriptions);
+RxUtils.unsubscribeIfNotNull(_subscriptions);
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        hidePDialog();
+hidePDialog();
+
     }
 
-    public void initialRecyclerView(){
+ public void initialRecyclerView(){
         mRecyclerView = (RecyclerView)findViewById(R.id.list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -112,4 +118,5 @@ public class MainActivity extends AppCompatActivity {
             pDialog = null;
         }
     }
+
 }

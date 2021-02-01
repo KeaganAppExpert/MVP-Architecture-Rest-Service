@@ -38,10 +38,13 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Result music = mItems.get(position);
+        String myString = "";
         holder.musicName.setText(music.getTrackName());
+
         Glide.with(mContext)
-                .load(music.getArtworkUrl100())//changes made here=========================================
+                .load(music.getArtworkUrl100())
                 .into(holder.musicImage);
+
         holder.setClickListener(new ItemClickListener() {
             @Override
             public void onClick(View view, int position, boolean isLongClick) {
@@ -53,8 +56,14 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
             }
         });
 
+        try {
 
-        holder.price.setText("$" + music.getTrackPrice().toString());
+            myString = Double.toString(music.getTrackPrice().doubleValue());
+
+            holder.price.setText(myString);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
         holder.artistName.setText(music.getArtistName());
     }
 
@@ -97,18 +106,5 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
     @Override
     public int getItemCount() {
         return mItems == null ? 0 : mItems.size();
-    }
-
-    public void updateAnswers(List<Result> items) {
-        mItems = items;
-        notifyDataSetChanged();
-    }
-
-    private Result getItem(int adapterPosition) {
-        return mItems.get(adapterPosition);
-    }
-
-    public interface PostItemListener {
-        void onPostClick(long id);
     }
 }

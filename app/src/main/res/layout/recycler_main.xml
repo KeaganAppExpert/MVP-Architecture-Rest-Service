@@ -8,14 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:hint="        Search"
+        android:hint="@string/search"
         android:textColor="@color/white"
         android:background="@color/purple_700"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textAlignment="gravity"
         android:textColorHint="@color/white"
-        android:gravity="left"/>
+        android:gravity="start"
+        android:importantForAutofill="no" />
     <View
         android:layout_width="400dp"
         android:layout_height="2dp"

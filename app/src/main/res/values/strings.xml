@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MVP architecture</string>
+    <string name="search">      Search</string>
 </resources>
