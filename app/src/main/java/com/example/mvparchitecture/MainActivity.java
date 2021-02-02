@@ -26,9 +26,6 @@ import rx.subscriptions.CompositeSubscription;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-
     private MusicDetailsFragment musicDetailsList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onDestroy() {
             super.onDestroy();
-
         }
 
 }

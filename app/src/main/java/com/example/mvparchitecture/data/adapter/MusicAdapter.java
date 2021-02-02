@@ -1,6 +1,7 @@
 package com.example.mvparchitecture.data.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,9 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mvparchitecture.MainActivity;
+import com.example.mvparchitecture.MusicDetailsFragment;
+import com.example.mvparchitecture.MusicListDetailsActivity;
 import com.example.mvparchitecture.R;
 import com.example.mvparchitecture.data.model.Result;
 import com.example.mvparchitecture.data.utilities.ItemClickListener;
@@ -39,15 +43,15 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Result music = mItems.get(position);
         String myString = "";
+        String test = "";
 
-        try {
-            myString = music.getTrackName();
+        myString = music.getTrackName();
+        if(myString!=null) {
             holder.musicName.setText(myString);
-        } catch(NullPointerException e){
-            e.printStackTrace();
-        } catch (Exception e){
-            e.printStackTrace();
+        } else {
+            holder.musicName.setText("Unavailable");
         }
+
 
         Glide.with(mContext)
                 .load(music.getArtworkUrl100())
@@ -59,26 +63,33 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
                 if (isLongClick) {
                     Toast.makeText(mContext, "#" + position + " - " + music.getArtistName() + " (Long click)", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(mContext, "#" + position + " - " + music.getArtistName(), Toast.LENGTH_SHORT).show();
-
+                    //Toast.makeText(mContext, "#" + position + " - " + music.getArtistName(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, MusicListDetailsActivity.class);
+                    if(intent!=null) {
+                        intent.putExtra(MusicListDetailsActivity.ARTIST_NAME, music.getArtistName());
+                        intent.putExtra(MusicListDetailsActivity.TRACK_NAME, music.getTrackName());
+                        intent.putExtra(MusicListDetailsActivity.TRACK_PRICE, music.getTrackPrice().toString());
+                        intent.putExtra(MusicListDetailsActivity.COLLECTION_NAME, music.getCollectionName());
+                        intent.putExtra(MusicListDetailsActivity.TRACK_URL, music.getArtworkUrl100());
+                        intent.putExtra(MusicListDetailsActivity.RATING, music.getContentAdvisoryRating());
+                        intent.putExtra(MusicListDetailsActivity.COLLECTION_ARTIST_URL, music.getCollectionArtistViewUrl());
+                        mContext.startActivity(intent);
+                    }
                 }
             }
         });
 
-        String test = "";
 
-        try {
-
-            test = "$"+ Double.toString(music.getTrackPrice().doubleValue());
-
+        if(music.getTrackPrice()!=null) {
+            test = "$" + (music.getTrackPrice());
             holder.price.setText(test);
-            holder.artistName.setText(music.getArtistName());
-
-        } catch(NullPointerException e){
-            e.printStackTrace();
-        } catch(Exception ex){
-            ex.printStackTrace();
+        } else {
+            test = "N/A";
+            holder.price.setText(test);
         }
+        holder.artistName.setText(music.getArtistName());
+
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{

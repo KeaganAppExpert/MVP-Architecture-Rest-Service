@@ -45,7 +45,6 @@ public class MusicDetailsFragment extends Fragment {
 
     public MusicDetailsFragment() {
         // Required empty public constructor
-
     }
 
 
@@ -97,7 +96,7 @@ public class MusicDetailsFragment extends Fragment {
 
                     @Override
                     public void onNext(MusicResponses moviesResponses) {
-                        if (moviesResponses.getResultCount() > 0 && mRecyclerView != null) {
+                        if (moviesResponses.getResultCount() !=null && mRecyclerView != null) {
                             mAdapter = new MusicAdapter(moviesResponses.getResults(), R.layout.card_row, getContext());
                             mRecyclerView.setAdapter(mAdapter);
                             hidePDialog();
