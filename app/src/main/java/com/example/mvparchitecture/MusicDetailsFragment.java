@@ -10,21 +10,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.mvparchitecture.data.adapter.MusicAdapter;
 import com.example.mvparchitecture.data.model.MusicResponses;
-import com.example.mvparchitecture.data.rest.APIService;
-import com.example.mvparchitecture.data.rest.RetrofitClient;
+import com.example.mvparchitecture.data.mvp.MusicListPresenter;
+import com.example.mvparchitecture.data.mvp.ViewPresenterContract;
 import com.example.mvparchitecture.data.utilities.RxUtils;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
@@ -32,10 +27,13 @@ import rx.subscriptions.CompositeSubscription;
  * Use the  factory method to
  * create an instance of this fragment.
  */
-public class MusicDetailsFragment extends Fragment {
+public class MusicDetailsFragment extends Fragment implements ViewPresenterContract.IView {
     private RecyclerView mRecyclerView;
     private MusicAdapter mAdapter;
     private ProgressDialog pDialog;
+
+    //Create an instance of the music list presenter
+    private MusicListPresenter musicListPresenter;
 
     /**
      * Subscription that represents a group of Subscriptions that are unsubscribed together.*/
@@ -60,10 +58,13 @@ public class MusicDetailsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        musicListPresenter = new MusicListPresenter(this);
+        musicListPresenter.retrieveData();
         initialRecyclerView();
         intialaizeProgress();
-        loadMusicList();
     }
+
+
 
     @Override
     public void onResume() {
@@ -80,40 +81,6 @@ public class MusicDetailsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         hidePDialog();
-    }
-
-    public void loadMusicList() {
-        APIService apiService =
-                RetrofitClient.getClient().create(APIService.class);
-        apiService.getAnswers()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MusicResponses>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(MusicResponses moviesResponses) {
-                        if (moviesResponses.getResultCount() !=null && mRecyclerView != null) {
-                            mAdapter = new MusicAdapter(moviesResponses.getResults(), R.layout.card_row, getContext());
-                            mRecyclerView.setAdapter(mAdapter);
-                            hidePDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        hidePDialog();
-                        Log.d("message", e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        System.out.println("Done");
-                    }
-                });
     }
 
     public void initialRecyclerView(){
@@ -133,5 +100,19 @@ public class MusicDetailsFragment extends Fragment {
             pDialog.dismiss();
             pDialog = null;
         }
+    }
+
+    @Override
+    public void passDataAdapter(MusicResponses musicResponses) {
+        if (musicResponses.getResults() !=null && mRecyclerView != null) {
+            mAdapter = new MusicAdapter(musicResponses.getResults(), R.layout.card_row, getContext());
+            mRecyclerView.setAdapter(mAdapter);
+            hidePDialog();
+        }
+    }
+
+    @Override
+    public void setPresenter(ViewPresenterContract.IPresenter presenter) {
+
     }
 }

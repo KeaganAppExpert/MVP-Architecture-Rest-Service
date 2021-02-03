@@ -15,7 +15,8 @@
         android:layout_marginStart="-2dp"
         android:layout_marginTop="23dp"
         tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="71dp" />
+        tools:layout_editor_absoluteY="71dp"
+        android:src="@drawable/ic_launcher_background"/>
 
     <TextView
         android:id="@+id/artist_Name"
@@ -67,17 +68,17 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/release_Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/textView7"
+        android:layout_alignStart="@+id/track_Number"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
         android:layout_marginTop="369dp"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/track_Number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -87,7 +88,7 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/primary_Genre_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -96,7 +97,7 @@
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/Track_Explicitness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/song_Rating"

@@ -65,7 +65,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
                 } else {
                     //Toast.makeText(mContext, "#" + position + " - " + music.getArtistName(), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(mContext, MusicListDetailsActivity.class);
-                    if(intent!=null) {
+                    if(intent!=null && music.getTrackPrice()!=null && music.getArtistName()!=null) {
                         intent.putExtra(MusicListDetailsActivity.ARTIST_NAME, music.getArtistName());
                         intent.putExtra(MusicListDetailsActivity.TRACK_NAME, music.getTrackName());
                         intent.putExtra(MusicListDetailsActivity.TRACK_PRICE, music.getTrackPrice().toString());
@@ -73,6 +73,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
                         intent.putExtra(MusicListDetailsActivity.TRACK_URL, music.getArtworkUrl100());
                         intent.putExtra(MusicListDetailsActivity.RATING, music.getContentAdvisoryRating());
                         intent.putExtra(MusicListDetailsActivity.COLLECTION_ARTIST_URL, music.getCollectionArtistViewUrl());
+                        intent.putExtra(MusicListDetailsActivity.RELEASE_DATE, music.getReleaseDate());
+                        intent.putExtra(MusicListDetailsActivity.PRIMARY_GENRE_RELEASE, music.getPrimaryGenreName());
+                        intent.putExtra(MusicListDetailsActivity.TRACK_EXPLICITNESS, music.getTrackExplicitness());
+                        intent.putExtra(MusicListDetailsActivity.TRACK_NUMBER, music.getTrackNumber());
                         mContext.startActivity(intent);
                     }
                 }
@@ -88,7 +92,6 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder>{
             holder.price.setText(test);
         }
         holder.artistName.setText(music.getArtistName());
-
 
     }
 
