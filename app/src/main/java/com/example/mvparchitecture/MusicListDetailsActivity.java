@@ -53,9 +53,9 @@ public class MusicListDetailsActivity extends AppCompatActivity {
             rating.setText(bundle.getString(RATING));
             /*int resId = bundle.getInt(TRACK_URL);
             trackURL.setImageResource(resId);*/
-            Glide.with(this)
+            /*Glide.with(this)
                     .load(bundle.getInt(TRACK_URL))
-                    .into(trackURL);
+                    .into(trackURL);*/
             releaseDate.setText(bundle.getString(RELEASE_DATE));
             primaryGenreName.setText(bundle.getString(PRIMARY_GENRE_RELEASE));
             trackExplicitness.setText(bundle.getString(TRACK_EXPLICITNESS));

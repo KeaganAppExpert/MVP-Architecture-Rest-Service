@@ -56,7 +56,7 @@ public class MusicDetailsFragment extends Fragment implements ViewPresenterContr
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         musicListPresenter = new MusicListPresenter(this);
         musicListPresenter.retrieveData();
